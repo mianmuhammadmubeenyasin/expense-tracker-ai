@@ -1,6 +1,7 @@
 'use client'
 
-import { Search, X } from 'lucide-react'
+import { useEffect, useRef, useState } from 'react'
+import { Search, X, ChevronDown } from 'lucide-react'
 import { CATEGORIES } from '@/lib/expense-schema'
 import type { Category } from '@/lib/types'
 
@@ -20,6 +21,19 @@ type Props = {
 export function FilterBar({ filters, onChange, resultCount }: Props) {
   const hasFilters =
     filters.search || filters.startDate || filters.endDate || filters.categories.length > 0
+
+  const [dropdownOpen, setDropdownOpen] = useState(false)
+  const dropdownRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+        setDropdownOpen(false)
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [])
 
   function toggleCategory(cat: Category) {
     const next = filters.categories.includes(cat)
@@ -60,25 +74,42 @@ export function FilterBar({ filters, onChange, resultCount }: Props) {
         />
       </div>
 
-      {/* Category pills */}
+      {/* Category dropdown */}
       <div className="flex items-center gap-2 flex-wrap">
         <span className="text-xs font-medium text-gray-500">Category:</span>
-        {CATEGORIES.map((cat) => {
-          const active = filters.categories.includes(cat)
-          return (
-            <button
-              key={cat}
-              onClick={() => toggleCategory(cat)}
-              className={`px-3 py-1 text-xs font-medium rounded-full border transition-colors ${
-                active
-                  ? 'bg-indigo-700 border-indigo-700 text-white'
-                  : 'bg-white border-gray-200 text-gray-600 hover:border-indigo-300'
-              }`}
-            >
-              {cat}
-            </button>
-          )
-        })}
+        <div className="relative" ref={dropdownRef}>
+          <button
+            type="button"
+            onClick={() => setDropdownOpen((o) => !o)}
+            className="flex items-center gap-2 px-3 py-1.5 text-xs font-medium bg-white border border-gray-200 rounded-xl hover:border-indigo-300 transition-colors"
+          >
+            {filters.categories.length === 0
+              ? 'All Categories'
+              : `${filters.categories.length} selected`}
+            <ChevronDown size={12} className="text-gray-400" />
+          </button>
+          {dropdownOpen && (
+            <div className="absolute z-50 mt-1 bg-white border border-gray-200 rounded-xl shadow-lg p-2 min-w-[160px]">
+              {CATEGORIES.map((cat) => {
+                const checked = filters.categories.includes(cat)
+                return (
+                  <label
+                    key={cat}
+                    className="flex items-center gap-2 px-2 py-1.5 text-xs text-gray-700 hover:bg-indigo-50 rounded-lg cursor-pointer"
+                  >
+                    <input
+                      type="checkbox"
+                      checked={checked}
+                      onChange={() => toggleCategory(cat)}
+                      className="accent-indigo-700"
+                    />
+                    {cat}
+                  </label>
+                )
+              })}
+            </div>
+          )}
+        </div>
         {hasFilters && (
           <button
             onClick={clearAll}

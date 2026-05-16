@@ -36,10 +36,11 @@ export function ExpenseForm({ onSubmit, defaultValues, submitLabel = 'Save Expen
     register,
     handleSubmit,
     control,
-    formState: { errors },
+    formState: { errors, isValid },
     watch,
   } = useForm<ExpenseFormValues>({
     resolver: zodResolver(expenseSchema),
+    mode: 'onChange',
     defaultValues: {
       date: defaultValues?.date ?? todayISO(),
       amount: defaultValues?.amount,
@@ -144,7 +145,7 @@ export function ExpenseForm({ onSubmit, defaultValues, submitLabel = 'Save Expen
 
       <button
         type="submit"
-        disabled={isLoading}
+        disabled={isLoading || !isValid}
         className="w-full py-3 bg-indigo-700 hover:bg-indigo-800 disabled:bg-indigo-400 text-white font-semibold rounded-xl transition-colors"
       >
         {isLoading ? 'Saving…' : submitLabel}

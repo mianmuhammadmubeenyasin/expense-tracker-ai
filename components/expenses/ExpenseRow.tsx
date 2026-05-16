@@ -41,7 +41,7 @@ export function ExpenseRow({ expense }: Props) {
 
       {confirming ? (
         <div className="flex items-center gap-1 flex-shrink-0">
-          <span className="text-xs text-gray-500 mr-1">Delete?</span>
+          <span className="text-xs text-gray-500 mr-1">Are you sure?</span>
           <button
             onClick={handleDelete}
             className="p-1.5 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors"
