@@ -13,11 +13,14 @@ type Props = { params: { id: string } }
 
 export default function EditExpensePage({ params }: Props) {
   const router = useRouter()
-  const { expenses, updateExpense } = useExpenses()
+  const { expenses, isLoaded, updateExpense } = useExpenses()
 
   const expense = expenses.find((e) => e.id === params.id)
 
-  if (expenses.length > 0 && !expense) {
+  if (!isLoaded) {
+    return <div className="flex items-center justify-center h-64 text-gray-500">Loading...</div>
+  }
+  if (!expense) {
     notFound()
   }
 

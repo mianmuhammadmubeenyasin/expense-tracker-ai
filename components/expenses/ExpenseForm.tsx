@@ -3,25 +3,16 @@
 import { useForm, Controller } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { DayPicker } from 'react-day-picker'
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { CalendarDays, ChevronDown } from 'lucide-react'
 import { expenseSchema, CATEGORIES, type ExpenseFormValues } from '@/lib/expense-schema'
-import { formatDate } from '@/lib/utils'
+import { formatDate, todayISO, dateToISO } from '@/lib/utils'
 
 type Props = {
   onSubmit: (values: ExpenseFormValues) => void
   defaultValues?: Partial<ExpenseFormValues>
   submitLabel?: string
   isLoading?: boolean
-}
-
-function todayISO(): string {
-  const d = new Date()
-  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
-}
-
-function dateToISO(date: Date): string {
-  return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`
 }
 
 function isoToDate(iso: string): Date {
@@ -31,6 +22,17 @@ function isoToDate(iso: string): Date {
 
 export function ExpenseForm({ onSubmit, defaultValues, submitLabel = 'Save Expense', isLoading }: Props) {
   const [calOpen, setCalOpen] = useState(false)
+  const pickerRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    function handleMouseDown(e: MouseEvent) {
+      if (pickerRef.current && !pickerRef.current.contains(e.target as Node)) {
+        setCalOpen(false)
+      }
+    }
+    document.addEventListener('mousedown', handleMouseDown)
+    return () => document.removeEventListener('mousedown', handleMouseDown)
+  }, [])
 
   const {
     register,
@@ -72,7 +74,7 @@ export function ExpenseForm({ onSubmit, defaultValues, submitLabel = 'Save Expen
                 <ChevronDown size={14} className="ml-auto text-gray-400" />
               </button>
               {calOpen && (
-                <div className="absolute z-50 mt-1 bg-white border border-gray-200 rounded-xl shadow-lg p-2">
+                <div ref={pickerRef} className="absolute z-50 mt-1 bg-white border border-gray-200 rounded-xl shadow-lg p-2">
                   <DayPicker
                     mode="single"
                     selected={field.value ? isoToDate(field.value) : undefined}

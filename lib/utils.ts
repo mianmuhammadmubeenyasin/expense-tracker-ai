@@ -114,6 +114,17 @@ export function getMonthlyData(expenses: Expense[]): MonthlyDataPoint[] {
   return months
 }
 
+// Returns today's date as YYYY-MM-DD
+export function todayISO(): string {
+  const d = new Date()
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
+}
+
+// Formats a Date as YYYY-MM-DD
+export function dateToISO(date: Date): string {
+  return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`
+}
+
 // Returns per-category totals for a given month key (amounts in cents)
 export function getCategoryTotals(
   expenses: Expense[],

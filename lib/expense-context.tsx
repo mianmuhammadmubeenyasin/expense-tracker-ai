@@ -6,6 +6,7 @@ import { dollarsToCents, exportCSV } from './utils'
 
 type ExpenseContextValue = {
   expenses: Expense[]
+  isLoaded: boolean
   addExpense: (data: ExpenseInput) => void
   updateExpense: (id: string, data: ExpenseInput) => void
   deleteExpense: (id: string) => void
@@ -23,6 +24,7 @@ function sortByDate(list: Expense[]): Expense[] {
 
 export function ExpenseProvider({ children }: { children: React.ReactNode }) {
   const [expenses, setExpenses] = useState<Expense[]>([])
+  const [isLoaded, setIsLoaded] = useState(false)
 
   useEffect(() => {
     try {
@@ -31,6 +33,7 @@ export function ExpenseProvider({ children }: { children: React.ReactNode }) {
     } catch {
       setExpenses([])
     }
+    setIsLoaded(true)
   }, [])
 
   const persist = useCallback((next: Expense[]) => {
@@ -85,7 +88,7 @@ export function ExpenseProvider({ children }: { children: React.ReactNode }) {
   }, [expenses])
 
   return (
-    <ExpenseContext.Provider value={{ expenses, addExpense, updateExpense, deleteExpense, exportExpenses }}>
+    <ExpenseContext.Provider value={{ expenses, isLoaded, addExpense, updateExpense, deleteExpense, exportExpenses }}>
       {children}
     </ExpenseContext.Provider>
   )
