@@ -10,7 +10,7 @@ export default function ExpensesPage() {
       <Header
         title="Expenses"
         subtitle="All your recorded expenses"
-        action={{ label: 'Add Expense', href: '/expenses/new', icon: PlusCircle }}
+        actions={[{ label: 'Add Expense', href: '/expenses/new', icon: PlusCircle }]}
       />
       <div className="p-6">
         <ExpenseList />

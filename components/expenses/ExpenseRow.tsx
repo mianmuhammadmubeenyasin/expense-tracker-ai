@@ -3,21 +3,17 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { Pencil, Trash2, Check, X } from 'lucide-react'
-import toast from 'react-hot-toast'
-import { useExpenses } from '@/lib/expense-context'
-import { formatCurrency, formatDate, CATEGORY_COLORS } from '@/lib/utils'
+import { formatCurrency, formatDate } from '@/lib/format'
+import { CATEGORY_COLORS } from '@/lib/chart'
 import type { Expense } from '@/lib/types'
 
-type Props = { expense: Expense }
+type Props = {
+  expense: Expense
+  onDelete: (id: string) => void
+}
 
-export function ExpenseRow({ expense }: Props) {
-  const { deleteExpense } = useExpenses()
+export function ExpenseRow({ expense, onDelete }: Props) {
   const [confirming, setConfirming] = useState(false)
-
-  function handleDelete() {
-    deleteExpense(expense.id)
-    toast.success('Expense deleted')
-  }
 
   return (
     <div className="flex items-center gap-3 px-4 py-3 hover:bg-indigo-50/50 rounded-xl transition-colors group">
@@ -43,7 +39,7 @@ export function ExpenseRow({ expense }: Props) {
         <div className="flex items-center gap-1 flex-shrink-0">
           <span className="text-xs text-gray-500 mr-1">Are you sure?</span>
           <button
-            onClick={handleDelete}
+            onClick={() => onDelete(expense.id)}
             className="p-1.5 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors"
             aria-label="Confirm delete"
           >

@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { ArrowRight } from 'lucide-react'
-import { formatCurrency, formatDate, CATEGORY_COLORS } from '@/lib/utils'
+import { formatCurrency, formatDate } from '@/lib/format'
+import { CATEGORY_COLORS } from '@/lib/chart'
 import type { Expense } from '@/lib/types'
 
 type Props = { expenses: Expense[] }

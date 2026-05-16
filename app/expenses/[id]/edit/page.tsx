@@ -3,17 +3,18 @@
 import { useRouter } from 'next/navigation'
 import { notFound } from 'next/navigation'
 import toast from 'react-hot-toast'
-import { useExpenses } from '@/lib/expense-context'
+import { useExpenseList, useExpenseMutations } from '@/lib/expense-context'
 import { Header } from '@/components/layout/Header'
 import { ExpenseForm } from '@/components/expenses/ExpenseForm'
-import { centsToDollars } from '@/lib/utils'
+import { centsToDollars } from '@/lib/money'
 import type { ExpenseFormValues } from '@/lib/expense-schema'
 
 type Props = { params: { id: string } }
 
 export default function EditExpensePage({ params }: Props) {
   const router = useRouter()
-  const { expenses, isLoaded, updateExpense } = useExpenses()
+  const { expenses, isLoaded } = useExpenseList()
+  const { updateExpense } = useExpenseMutations()
 
   if (!isLoaded) {
     return <div className="flex items-center justify-center h-64 text-gray-500">Loading...</div>
