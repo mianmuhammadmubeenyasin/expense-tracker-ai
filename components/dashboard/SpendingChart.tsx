@@ -3,6 +3,7 @@
 import dynamic from 'next/dynamic'
 import { CATEGORY_COLORS, formatCurrency } from '@/lib/utils'
 import type { MonthlyDataPoint } from '@/lib/utils'
+import { CATEGORIES } from '@/lib/expense-schema'
 import type { Category } from '@/lib/types'
 
 const BarChart = dynamic(() => import('recharts').then((m) => m.BarChart), { ssr: false }) as any
@@ -15,8 +16,6 @@ const YAxis = dynamic(() => import('recharts').then((m) => m.YAxis as any), { ss
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const Tooltip = dynamic(() => import('recharts').then((m) => m.Tooltip as any), { ssr: false }) as any
 const ResponsiveContainer = dynamic(() => import('recharts').then((m) => m.ResponsiveContainer), { ssr: false }) as any
-
-const CATEGORIES: Category[] = ['Food', 'Transportation', 'Entertainment', 'Shopping', 'Bills', 'Other']
 
 type Props = { data: MonthlyDataPoint[] }
 
@@ -51,7 +50,7 @@ export function SpendingChart({ data }: Props) {
             contentStyle={{ borderRadius: 8, border: '1px solid #E0E7FF', fontSize: 12 }}
           />
           {CATEGORIES.map((cat) => (
-            <Bar key={cat} dataKey={cat} stackId="a" fill={CATEGORY_COLORS[cat]} radius={cat === 'Other' ? [4, 4, 0, 0] : [0, 0, 0, 0]} />
+            <Bar key={cat} dataKey={cat} stackId="a" fill={CATEGORY_COLORS[cat]} radius={[4, 4, 0, 0]} />
           ))}
         </BarChart>
       </ResponsiveContainer>

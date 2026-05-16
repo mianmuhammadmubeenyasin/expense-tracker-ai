@@ -14,9 +14,13 @@ const navItems = [
 
 export function Sidebar() {
   const pathname = usePathname()
-  const { exportExpenses } = useExpenses()
+  const { expenses, exportExpenses } = useExpenses()
 
   function handleExport() {
+    if (expenses.length === 0) {
+      toast.error('No expenses to export')
+      return
+    }
     exportExpenses()
     toast.success('CSV exported!')
   }
