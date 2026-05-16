@@ -5,12 +5,16 @@ import { CATEGORY_COLORS, formatCurrency } from '@/lib/utils'
 import type { MonthlyDataPoint } from '@/lib/utils'
 import type { Category } from '@/lib/types'
 
-const BarChart = dynamic(() => import('recharts').then((m) => m.BarChart), { ssr: false })
-const Bar = dynamic(() => import('recharts').then((m) => m.Bar), { ssr: false })
-const XAxis = dynamic(() => import('recharts').then((m) => m.XAxis), { ssr: false })
-const YAxis = dynamic(() => import('recharts').then((m) => m.YAxis), { ssr: false })
-const Tooltip = dynamic(() => import('recharts').then((m) => m.Tooltip), { ssr: false })
-const ResponsiveContainer = dynamic(() => import('recharts').then((m) => m.ResponsiveContainer), { ssr: false })
+const BarChart = dynamic(() => import('recharts').then((m) => m.BarChart), { ssr: false }) as any
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const Bar = dynamic(() => import('recharts').then((m) => m.Bar as any), { ssr: false }) as any
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const XAxis = dynamic(() => import('recharts').then((m) => m.XAxis as any), { ssr: false }) as any
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const YAxis = dynamic(() => import('recharts').then((m) => m.YAxis as any), { ssr: false }) as any
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const Tooltip = dynamic(() => import('recharts').then((m) => m.Tooltip as any), { ssr: false }) as any
+const ResponsiveContainer = dynamic(() => import('recharts').then((m) => m.ResponsiveContainer), { ssr: false }) as any
 
 const CATEGORIES: Category[] = ['Food', 'Transportation', 'Entertainment', 'Shopping', 'Bills', 'Other']
 
@@ -37,7 +41,7 @@ export function SpendingChart({ data }: Props) {
         <BarChart data={data} margin={{ top: 0, right: 0, left: -10, bottom: 0 }}>
           <XAxis dataKey="month" tick={{ fontSize: 12, fill: '#9CA3AF' }} axisLine={false} tickLine={false} />
           <YAxis
-            tickFormatter={(v) => `$${(v / 100).toFixed(0)}`}
+            tickFormatter={(v: any) => `$${(v / 100).toFixed(0)}`}
             tick={{ fontSize: 11, fill: '#9CA3AF' }}
             axisLine={false}
             tickLine={false}

@@ -38,7 +38,7 @@ export default function DashboardPage() {
 
   const categoryTotals = useMemo(() => getCategoryTotals(expenses, thisMonthKey), [expenses, thisMonthKey])
 
-  const topCategory = categoryTotals[0]?.category ?? '—'
+  const topCategory: string = categoryTotals[0]?.category ?? '—'
 
   const trend = useMemo(() => {
     if (lastMonthTotal === 0) return undefined

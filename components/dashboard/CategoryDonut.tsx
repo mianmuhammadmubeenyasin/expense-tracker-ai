@@ -4,11 +4,13 @@ import dynamic from 'next/dynamic'
 import { CATEGORY_COLORS, formatCurrency } from '@/lib/utils'
 import type { Category } from '@/lib/types'
 
-const PieChart = dynamic(() => import('recharts').then((m) => m.PieChart), { ssr: false })
-const Pie = dynamic(() => import('recharts').then((m) => m.Pie), { ssr: false })
-const Cell = dynamic(() => import('recharts').then((m) => m.Cell), { ssr: false })
-const Tooltip = dynamic(() => import('recharts').then((m) => m.Tooltip), { ssr: false })
-const ResponsiveContainer = dynamic(() => import('recharts').then((m) => m.ResponsiveContainer), { ssr: false })
+const PieChart = dynamic(() => import('recharts').then((m) => m.PieChart), { ssr: false }) as any
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const Pie = dynamic(() => import('recharts').then((m) => m.Pie as any), { ssr: false }) as any
+const Cell = dynamic(() => import('recharts').then((m) => m.Cell), { ssr: false }) as any
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const Tooltip = dynamic(() => import('recharts').then((m) => m.Tooltip as any), { ssr: false }) as any
+const ResponsiveContainer = dynamic(() => import('recharts').then((m) => m.ResponsiveContainer), { ssr: false }) as any
 
 type Props = {
   data: { category: Category; total: number }[]
