@@ -35,20 +35,16 @@ export default function EditExpensePage({ params }: Props) {
       <Header title="Edit Expense" subtitle="Update the expense details" />
       <div className="p-6 max-w-lg">
         <div className="bg-white rounded-2xl border border-indigo-100 shadow-sm p-6">
-          {expense ? (
-            <ExpenseForm
-              onSubmit={handleSubmit}
-              submitLabel="Save Changes"
-              defaultValues={{
-                date: expense.date,
-                amount: centsToDollars(expense.amount),
-                category: expense.category,
-                description: expense.description,
-              }}
-            />
-          ) : (
-            <p className="text-sm text-gray-400 text-center py-8">Loading…</p>
-          )}
+          <ExpenseForm
+            onSubmit={handleSubmit}
+            submitLabel="Save Changes"
+            defaultValues={{
+              date: expense!.date,
+              amount: centsToDollars(expense!.amount),
+              category: expense!.category,
+              description: expense!.description,
+            }}
+          />
         </div>
       </div>
     </div>
