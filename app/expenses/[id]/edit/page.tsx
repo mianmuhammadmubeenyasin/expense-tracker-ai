@@ -1,0 +1,53 @@
+'use client'
+
+import { useRouter } from 'next/navigation'
+import { notFound } from 'next/navigation'
+import toast from 'react-hot-toast'
+import { useExpenses } from '@/lib/expense-context'
+import { Header } from '@/components/layout/Header'
+import { ExpenseForm } from '@/components/expenses/ExpenseForm'
+import { centsToDollars } from '@/lib/utils'
+import type { ExpenseFormValues } from '@/lib/expense-schema'
+
+type Props = { params: { id: string } }
+
+export default function EditExpensePage({ params }: Props) {
+  const router = useRouter()
+  const { expenses, updateExpense } = useExpenses()
+
+  const expense = expenses.find((e) => e.id === params.id)
+
+  if (expenses.length > 0 && !expense) {
+    notFound()
+  }
+
+  function handleSubmit(values: ExpenseFormValues) {
+    updateExpense(params.id, values)
+    toast.success('Expense updated!')
+    router.push('/expenses')
+  }
+
+  return (
+    <div>
+      <Header title="Edit Expense" subtitle="Update the expense details" />
+      <div className="p-6 max-w-lg">
+        <div className="bg-white rounded-2xl border border-indigo-100 shadow-sm p-6">
+          {expense ? (
+            <ExpenseForm
+              onSubmit={handleSubmit}
+              submitLabel="Save Changes"
+              defaultValues={{
+                date: expense.date,
+                amount: centsToDollars(expense.amount),
+                category: expense.category,
+                description: expense.description,
+              }}
+            />
+          ) : (
+            <p className="text-sm text-gray-400 text-center py-8">Loading…</p>
+          )}
+        </div>
+      </div>
+    </div>
+  )
+}
