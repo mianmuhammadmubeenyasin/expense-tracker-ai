@@ -2,9 +2,8 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { LayoutDashboard, List, PlusCircle, Download } from 'lucide-react'
-import { useExpenses } from '@/lib/expense-context'
-import toast from 'react-hot-toast'
+import { LayoutDashboard, List, PlusCircle } from 'lucide-react'
+import { ExportAction } from './ExportAction'
 
 const navItems = [
   { href: '/', label: 'Dashboard', icon: LayoutDashboard },
@@ -14,16 +13,6 @@ const navItems = [
 
 export function Sidebar() {
   const pathname = usePathname()
-  const { expenses, exportExpenses } = useExpenses()
-
-  function handleExport() {
-    if (expenses.length === 0) {
-      toast.error('No expenses to export')
-      return
-    }
-    exportExpenses()
-    toast.success('CSV exported!')
-  }
 
   return (
     <>
@@ -57,13 +46,7 @@ export function Sidebar() {
         </nav>
 
         <div className="px-4 pb-6">
-          <button
-            onClick={handleExport}
-            className="flex items-center gap-3 w-full px-3 py-2.5 rounded-lg text-sm font-medium text-indigo-200 hover:bg-indigo-800 hover:text-white transition-colors"
-          >
-            <Download size={18} />
-            Export CSV
-          </button>
+          <ExportAction />
         </div>
       </aside>
 
@@ -85,13 +68,7 @@ export function Sidebar() {
               </Link>
             )
           })}
-          <button
-            onClick={handleExport}
-            className="flex flex-col items-center gap-0.5 px-4 py-1.5 rounded-lg text-indigo-300"
-          >
-            <Download size={20} />
-            <span className="text-xs">Export</span>
-          </button>
+          <ExportAction variant="mobile" />
         </div>
       </nav>
     </>

@@ -2,14 +2,9 @@
 
 import { useMemo } from 'react'
 import { DollarSign, Calendar, Tag } from 'lucide-react'
-import { useExpenses } from '@/lib/expense-context'
-import {
-  formatCurrency,
-  getMonthlyData,
-  getCategoryTotals,
-  currentMonthKey,
-  prevMonthKey,
-} from '@/lib/utils'
+import { useExpenseList } from '@/lib/expense-context'
+import { formatCurrency } from '@/lib/format'
+import { getMonthlyData, getCategoryTotals, currentMonthKey, prevMonthKey } from '@/lib/chart'
 import { Header } from '@/components/layout/Header'
 import { SummaryCard } from '@/components/dashboard/SummaryCard'
 import { SpendingChart } from '@/components/dashboard/SpendingChart'
@@ -17,7 +12,7 @@ import { CategoryDonut } from '@/components/dashboard/CategoryDonut'
 import { RecentExpenses } from '@/components/dashboard/RecentExpenses'
 
 export default function DashboardPage() {
-  const { expenses } = useExpenses()
+  const { expenses } = useExpenseList()
 
   const thisMonthKey = currentMonthKey()
   const lastMonthKey = prevMonthKey()

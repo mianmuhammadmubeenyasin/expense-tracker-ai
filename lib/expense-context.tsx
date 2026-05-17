@@ -2,16 +2,20 @@
 
 import { createContext, useContext, useEffect, useState, useCallback } from 'react'
 import type { Expense, ExpenseInput } from './types'
-import { dollarsToCents, exportCSV } from './utils'
+import { dollarsToCents } from './money'
 
-type ExpenseContextValue = {
+type ExpenseListValue = {
   expenses: Expense[]
   isLoaded: boolean
+}
+
+type ExpenseMutationsValue = {
   addExpense: (data: ExpenseInput) => void
   updateExpense: (id: string, data: ExpenseInput) => void
   deleteExpense: (id: string) => void
-  exportExpenses: () => void
 }
+
+type ExpenseContextValue = ExpenseListValue & ExpenseMutationsValue
 
 const ExpenseContext = createContext<ExpenseContextValue | null>(null)
 const STORAGE_KEY = 'expenses'
@@ -62,13 +66,7 @@ export function ExpenseProvider({ children }: { children: React.ReactNode }) {
       persist(
         expenses.map((e) =>
           e.id === id
-            ? {
-                ...e,
-                date: data.date,
-                amount: dollarsToCents(data.amount),
-                category: data.category,
-                description: data.description,
-              }
+            ? { ...e, date: data.date, amount: dollarsToCents(data.amount), category: data.category, description: data.description }
             : e
         )
       )
@@ -77,25 +75,36 @@ export function ExpenseProvider({ children }: { children: React.ReactNode }) {
   )
 
   const deleteExpense = useCallback(
-    (id: string) => {
-      persist(expenses.filter((e) => e.id !== id))
-    },
+    (id: string) => persist(expenses.filter((e) => e.id !== id)),
     [expenses, persist]
   )
 
-  const exportExpenses = useCallback(() => {
-    exportCSV(expenses)
-  }, [expenses])
-
   return (
-    <ExpenseContext.Provider value={{ expenses, isLoaded, addExpense, updateExpense, deleteExpense, exportExpenses }}>
+    <ExpenseContext.Provider value={{ expenses, isLoaded, addExpense, updateExpense, deleteExpense }}>
       {children}
     </ExpenseContext.Provider>
   )
 }
 
-export function useExpenses(): ExpenseContextValue {
+function useExpenseContext(): ExpenseContextValue {
   const ctx = useContext(ExpenseContext)
-  if (!ctx) throw new Error('useExpenses must be used within ExpenseProvider')
+  if (!ctx) throw new Error('Expense hooks must be used within ExpenseProvider')
   return ctx
+}
+
+/** Read-only: expenses list and hydration state. */
+export function useExpenseList(): ExpenseListValue {
+  const { expenses, isLoaded } = useExpenseContext()
+  return { expenses, isLoaded }
+}
+
+/** Write-only: add, update, delete mutations. */
+export function useExpenseMutations(): ExpenseMutationsValue {
+  const { addExpense, updateExpense, deleteExpense } = useExpenseContext()
+  return { addExpense, updateExpense, deleteExpense }
+}
+
+/** Full context — use only when both reading and writing are needed in the same component. */
+export function useExpenses(): ExpenseContextValue {
+  return useExpenseContext()
 }

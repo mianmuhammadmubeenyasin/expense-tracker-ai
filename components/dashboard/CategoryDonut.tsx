@@ -1,7 +1,8 @@
 'use client'
 
 import dynamic from 'next/dynamic'
-import { CATEGORY_COLORS, formatCurrency } from '@/lib/utils'
+import { CATEGORY_COLORS } from '@/lib/chart'
+import { formatCurrency } from '@/lib/format'
 import type { Category } from '@/lib/types'
 
 const PieChart = dynamic(() => import('recharts').then((m) => m.PieChart), { ssr: false }) as any
