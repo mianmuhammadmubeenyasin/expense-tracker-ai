@@ -1,8 +1,9 @@
 'use client'
 
 import dynamic from 'next/dynamic'
-import { CATEGORY_COLORS, formatCurrency } from '@/lib/utils'
-import type { MonthlyDataPoint } from '@/lib/utils'
+import { CATEGORY_COLORS } from '@/lib/chart'
+import type { MonthlyDataPoint } from '@/lib/chart'
+import { formatCurrency } from '@/lib/format'
 import { CATEGORIES } from '@/lib/expense-schema'
 import type { Category } from '@/lib/types'
 

@@ -6,7 +6,7 @@ import { DayPicker } from 'react-day-picker'
 import { useState, useRef, useEffect } from 'react'
 import { CalendarDays, ChevronDown } from 'lucide-react'
 import { expenseSchema, CATEGORIES, type ExpenseFormValues } from '@/lib/expense-schema'
-import { formatDate, todayISO, dateToISO } from '@/lib/utils'
+import { formatDate, todayISO, dateToISO } from '@/lib/format'
 
 type Props = {
   onSubmit: (values: ExpenseFormValues) => void

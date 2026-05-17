@@ -2,14 +2,14 @@
 
 import { useRouter } from 'next/navigation'
 import toast from 'react-hot-toast'
-import { useExpenses } from '@/lib/expense-context'
+import { useExpenseMutations } from '@/lib/expense-context'
 import { Header } from '@/components/layout/Header'
 import { ExpenseForm } from '@/components/expenses/ExpenseForm'
 import type { ExpenseFormValues } from '@/lib/expense-schema'
 
 export default function NewExpensePage() {
   const router = useRouter()
-  const { addExpense } = useExpenses()
+  const { addExpense } = useExpenseMutations()
 
   function handleSubmit(values: ExpenseFormValues) {
     addExpense(values)

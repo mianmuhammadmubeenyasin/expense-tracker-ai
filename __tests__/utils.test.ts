@@ -1,5 +1,8 @@
 import { describe, it, expect, vi, afterEach } from 'vitest'
-import { formatCurrency, formatDate, dollarsToCents, centsToDollars, exportCSV, CATEGORY_COLORS } from '@/lib/utils'
+import { formatCurrency, formatDate } from '@/lib/format'
+import { dollarsToCents, centsToDollars } from '@/lib/money'
+import { exportCSV } from '@/lib/export'
+import { CATEGORY_COLORS } from '@/lib/chart'
 import type { Expense } from '@/lib/types'
 
 describe('formatCurrency', () => {

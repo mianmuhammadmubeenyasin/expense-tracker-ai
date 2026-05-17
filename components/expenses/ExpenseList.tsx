@@ -1,7 +1,8 @@
 'use client'
 
 import { useState, useMemo } from 'react'
-import { useExpenses } from '@/lib/expense-context'
+import toast from 'react-hot-toast'
+import { useExpenseList, useExpenseMutations } from '@/lib/expense-context'
 import { ExpenseRow } from './ExpenseRow'
 import { FilterBar, type FilterState } from './FilterBar'
 
@@ -13,8 +14,14 @@ const INITIAL_FILTERS: FilterState = {
 }
 
 export function ExpenseList() {
-  const { expenses } = useExpenses()
+  const { expenses } = useExpenseList()
+  const { deleteExpense } = useExpenseMutations()
   const [filters, setFilters] = useState<FilterState>(INITIAL_FILTERS)
+
+  function handleDelete(id: string) {
+    deleteExpense(id)
+    toast.success('Expense deleted')
+  }
 
   const filtered = useMemo(() => {
     return expenses.filter((e) => {
@@ -41,7 +48,7 @@ export function ExpenseList() {
       ) : (
         <div className="bg-white rounded-2xl border border-indigo-100 shadow-sm divide-y divide-gray-50 px-2 py-2">
           {filtered.map((expense) => (
-            <ExpenseRow key={expense.id} expense={expense} />
+            <ExpenseRow key={expense.id} expense={expense} onDelete={handleDelete} />
           ))}
         </div>
       )}

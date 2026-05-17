@@ -32,7 +32,7 @@ beforeEach(() => localStorageMock.clear())
 describe('useExpenses', () => {
   it('throws when used outside ExpenseProvider', () => {
     const spy = vi.spyOn(console, 'error').mockImplementation(() => {})
-    expect(() => render(<TestConsumer />)).toThrow('useExpenses must be used within ExpenseProvider')
+    expect(() => render(<TestConsumer />)).toThrow('Expense hooks must be used within ExpenseProvider')
     spy.mockRestore()
   })
 
