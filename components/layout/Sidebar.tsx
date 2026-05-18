@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { LayoutDashboard, List, PlusCircle, BarChart2 } from 'lucide-react'
+import { LayoutDashboard, List, PlusCircle, BarChart2, Store } from 'lucide-react'
 import { ExportAction } from './ExportAction'
 
 const navItems = [
@@ -10,6 +10,7 @@ const navItems = [
   { href: '/expenses', label: 'Expenses', icon: List },
   { href: '/expenses/new', label: 'Add Expense', icon: PlusCircle },
   { href: '/analytics/categories', label: 'Top Categories', icon: BarChart2 },
+  { href: '/analytics/vendors', label: 'Top Vendors', icon: Store },
 ]
 
 export function Sidebar() {
